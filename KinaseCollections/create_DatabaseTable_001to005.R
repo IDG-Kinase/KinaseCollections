@@ -8,6 +8,7 @@ library(synapseClient)
 library(dplyr)
 library(tidyr)
 library(ggplot2)
+library(here)
 `%nin%`<-Negate(`%in%`)
 
 ##################################################################################################################T
@@ -16,7 +17,7 @@ library(ggplot2)
 #User input
 Synapse_UID<-"myusername"
 Synapse_password<-"mypassword"
-dir_project<-"local project directory"
+dir_project<-here()
 synapse_ids<-c("syn12176085","syn12074611",
                "syn12074612","syn12617103","syn12617102",
                "syn12617104","syn12617106","syn12617169",
@@ -30,8 +31,9 @@ dir_databasetables<-"local directory datatable output"
 ##################################################################################################################T
 synapseLogin(Synapse_UID, Synapse_password) ## requires user input
 c.time<-Sys.time()%>%as.character()%>%gsub("-","",.)%>%gsub(" ","_",.)%>%gsub(":","",.)
-paste0(dir_project,paste0(rstudioapi::getActiveDocumentContext()$path%>%dirname()%>%basename()))
-dir_c_script<-paste0(dir_project,paste0(rstudioapi::getActiveDocumentContext()$path%>%dirname()%>%basename()))
+
+dir_c_script<-file.path(dir_project,"KinaseCollections")
+
 dir_log<-paste0(dir_project,paste0(rstudioapi::getActiveDocumentContext()$path%>%dirname()%>%basename()),"_SynapseLog")
 tempdir<-paste0(dir_project,"temp_local_synapse_files",Sys.time()%>%as.character()%>%gsub("-","",.)%>%gsub(" ","_",.)%>%gsub(":","",.))
 dir.create(tempdir, showWarnings = TRUE, recursive = TRUE)
